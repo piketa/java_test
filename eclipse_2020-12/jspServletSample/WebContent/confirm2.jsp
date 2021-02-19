@@ -17,17 +17,19 @@
 	<div align="center">会員登録</div>
 	<div align="center">氏名<%=Name%></div>
 	<div align="center">年齢<%=Old%></div>
-	<%
-		if (Gender_select.equals("custem")) {
-	%>
-	<div id="Gender" align="center"><%=Gender%></div>
-	<%
-		} else {
-	%>
 	<div id="Gender_select" align="center">性別<%=Gender_select%></div>
-	<%
+	<div id="Gender" align="center"><%=Gender%></div>
+
+	<script>
+		if (document.getElementById("Gender").textContent == "custem") {
+			document.getElementById("Gender").style.display = "none";
+			document.getElementById("Gender_select").style.display = "block";
+		} else {
+			document.getElementById("Gender").style.display = "block";
+			document.getElementById("Gender_select").style.display = "none";
 		}
-	%>
+	</script>
+
 	<div align="center">
 		<form action="/jspServletSample/member.jsp" method="post">
 			<input type="submit" value="戻る">

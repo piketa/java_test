@@ -38,6 +38,7 @@
 		</div>
 		<%-- カスタムが選択された場合、テキストボックスを表示する処理 START --%>
 		<div id="custombox_a" align="center" style="display: none;">
+<%-- 値が空のためこの辺りを修正する必要あり --%>
 			カスタム<input id="custombox" type="text" name="Gender">
 		</div>
 		<script>

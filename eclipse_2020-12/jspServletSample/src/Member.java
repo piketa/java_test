@@ -99,6 +99,12 @@ public class Member extends HttpServlet {
 
 			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
 			dispatch.forward(request, response);
+//ここのif文がうまく表示されていないのでコメントアウト
+//		} else if (old == null || old == "") {
+//			requiredCheckName(request.getParameter("Old"));
+//			request.setAttribute("error_msg_old", getErrorList());
+//			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
+//			dispatch.forward(request, response);
 		} else {
 			//##### バリデーションの結果問題なければ、次画面に遷移する
 			request.setAttribute("fromName", name);
