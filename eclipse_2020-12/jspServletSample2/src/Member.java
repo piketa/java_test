@@ -64,46 +64,55 @@ public class Member extends HttpServlet {
 		return buf.toString();
 	}
 
+	//氏名入力NULL判定
+	boolean check_null = true;
+
+	public void requiredCheckNull(String value) {
+		if (value == null || value.trim().isEmpty()) {
+			check_null = false;
+			return;
+		}
+	}
+
 	//文字入力上限判定
-	boolean check_mojinumber = true;
+	boolean check_mojinumber = false;
+
 	private boolean check_mojinumber(String value, int minimumLength) {
 		if (value.length() < minimumLength)
-			check_mojinumber = false;
+			check_mojinumber = true;
 		return check_mojinumber;
 	}
 
 	//全角判定
-	boolean check_zenkaku = false;
+	boolean check_zenkaku = true;
+
 	private boolean check_zenkaku(String value) {
 		byte[] bytes = value.getBytes();
 		if (value.length() != bytes.length) {
-			check_zenkaku = true;
+			check_zenkaku = false;
 			return check_zenkaku;
 		}
 		return check_zenkaku;
 	}
 
-	//氏名入力NULL判定
+	//入力NULL判定メッセージ
 	public void requiredCheckName(String value) {
-		if (value == null || value.trim().isEmpty()) {
+		if (!check_zenkaku(value))
 			errsname.add(" 名前を入力してください。");
-		}
 	}
 
-	//全角判定
+	//全角判定メッセージ
 	public void requiredCheckName_zenkaku(String value) {
 		if (!check_zenkaku(value))
 			errsname_zenkaku.add("文字が全角ではありません。");
 	}
 
-
-	//文字入力上限判定
+	//文字入力上限判定メッセージ
 	public void requiredCheckName_mojinumber(String value) {
 		if (!check_mojinumber(value, 20)) {
 			errsname_mojinumber.add(" ２０字以内の文字数で入力してください。");
 		}
 	}
-
 
 	public void requiredCheckOld(String value) {
 		if (value == null || value.trim().isEmpty()) {
@@ -126,17 +135,17 @@ public class Member extends HttpServlet {
 		String gender_select = request.getParameter("Gender_select");
 		String gender = request.getParameter("Gender");
 
-		if (name == null || name == "") {
-			requiredCheckName(request.getParameter("Name"));
+		if (check_null = false) {
+			requiredCheckNull(request.getParameter("Name"));
 			request.setAttribute("error_msg_name", getErrorList());
 			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
 			dispatch.forward(request, response);
-		} else if (check_zenkaku = true) {
+		} else if (check_zenkaku = false) {
 			requiredCheckName_zenkaku(request.getParameter("Name"));
 			request.setAttribute("error_msg_name_zenkaku", getErrorList());
 			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
 			dispatch.forward(request, response);
-		} else 	if (check_mojinumber = false) {
+		} else if (check_mojinumber = false) {
 			requiredCheckName_mojinumber(request.getParameter("Name"));
 			request.setAttribute("error_msg_name_mojinember", getErrorList());
 			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");

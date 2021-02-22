@@ -14,7 +14,7 @@
 		</div>
 		<%-- 氏名に何も入力されていない場合 --%>
 		<%
-			if (request.getAttribute("error_msg_name") != null) {
+			if (request.getAttribute("error_msg_name") == "false") {
 		%>
 		<%=request.getAttribute("error_msg_name")%>
 		<%
@@ -22,7 +22,7 @@
 		%>
 		<%-- 全角でない場合エラー表示 --%>
 		<%
-			if (request.getAttribute("error_msg_name_zenkaku") == "true") {
+			if (request.getAttribute("error_msg_name_zenkaku") == "false") {
 		%>
 		<%=request.getAttribute("error_msg_name_mojinember")%>
 		<%
