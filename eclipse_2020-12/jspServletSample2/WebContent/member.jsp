@@ -12,40 +12,17 @@
 		<div id="Name1" align="center">
 			氏名<input type="text" name="Name">
 		</div>
-		<%-- 氏名に何も入力されていない場合 --%>
 		<%
-			if (request.getAttribute("error_msg_name") == "false") {
+			if (request.getAttribute("error_msg_name_zenkaku") != null) {
 		%>
-		<%=request.getAttribute("error_msg_name")%>
-		<%
-			}
-		%>
-		<%-- 全角でない場合エラー表示 --%>
-		<%
-			if (request.getAttribute("error_msg_name_zenkaku") == "false") {
-		%>
-		<%=request.getAttribute("error_msg_name_mojinember")%>
+		<%=request.getAttribute("error_msg_name_zenkaku")%>
 		<%
 			}
 		%>
-		<%-- ２０文字以内ではない場合エラー表示 --%>
-		<%
-			if (request.getAttribute("error_msg_name_mojinember") == "false") {
-		%>
-		<%=request.getAttribute("error_msg_name")%>
-		<%
-			}
-		%>
+
 		<div align="center">
 			年齢<input type="text" name="Old">
 		</div>
-		<%
-			if (request.getAttribute("error_msg_old") != null) {
-		%>
-		<%=request.getAttribute("error_msg_old")%>
-		<%
-			}
-		%>
 		<div align="center">
 			性別 <select id="Gender" name="Gender_select" onchange="changeSelect()">
 				<option value="男">男</option>

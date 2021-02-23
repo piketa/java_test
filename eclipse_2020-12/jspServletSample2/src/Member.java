@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/Member")
 public class Member extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -51,11 +50,23 @@ public class Member extends HttpServlet {
 			for (int i = 0; i < errsname.size(); i++) {
 				buf.append("<li>" + errsname.get(i) + "</li>");
 			}
-		} else if (errsold.size() > 0) {
+		}
+		if (errsname_zenkaku.size() > 0) {
+			for (int i = 0; i < errsname_zenkaku.size(); i++) {
+				buf.append("<li>" + errsname_zenkaku.get(i) + "</li>");
+			}
+		}
+		if (errsname_mojinumber.size() > 0) {
+			for (int i = 0; i < errsname_zenkaku.size(); i++) {
+				buf.append("<li>" + errsname_zenkaku.get(i) + "</li>");
+			}
+		}
+		if (errsold.size() > 0) {
 			for (int i = 0; i < errsold.size(); i++) {
 				buf.append("<li>" + errsold.get(i) + "</li>");
 			}
-		} else if (errsgender.size() > 0) {
+		}
+		if (errsgender.size() > 0) {
 			for (int i = 0; i < errsgender.size(); i++) {
 				buf.append("<li>" + errsgender.get(i) + "</li>");
 			}
@@ -64,41 +75,15 @@ public class Member extends HttpServlet {
 		return buf.toString();
 	}
 
-	//氏名入力NULL判定
-	boolean check_null = true;
-
-	public void requiredCheckNull(String value) {
-		if (value == null || value.trim().isEmpty()) {
-			check_null = false;
-			return;
-		}
-	}
-
-	//文字入力上限判定
-	boolean check_mojinumber = false;
-
-	private boolean check_mojinumber(String value, int minimumLength) {
-		if (value.length() < minimumLength)
-			check_mojinumber = true;
-		return check_mojinumber;
-	}
-
 	//全角判定
 	boolean check_zenkaku = true;
 
 	private boolean check_zenkaku(String value) {
-		byte[] bytes = value.getBytes();
-		if (value.length() != bytes.length) {
+		if (!value.matches("^[^ -~｡-ﾟ]+$")) {
 			check_zenkaku = false;
 			return check_zenkaku;
 		}
 		return check_zenkaku;
-	}
-
-	//入力NULL判定メッセージ
-	public void requiredCheckName(String value) {
-		if (!check_zenkaku(value))
-			errsname.add(" 名前を入力してください。");
 	}
 
 	//全角判定メッセージ
@@ -107,58 +92,27 @@ public class Member extends HttpServlet {
 			errsname_zenkaku.add("文字が全角ではありません。");
 	}
 
-	//文字入力上限判定メッセージ
-	public void requiredCheckName_mojinumber(String value) {
-		if (!check_mojinumber(value, 20)) {
-			errsname_mojinumber.add(" ２０字以内の文字数で入力してください。");
-		}
-	}
-
-	public void requiredCheckOld(String value) {
-		if (value == null || value.trim().isEmpty()) {
-			errsold.add(" 年齢を入力してください。");
-		}
-	}
-
-	public void requiredCheckCustom(String value) {
-		if (value == null || value.trim().isEmpty()) {
-			errsold.add("カスタムを選択した場合は入力してください。");
-		}
-	}
-
 	public void MandatoryCheck(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		request.setCharacterEncoding("UTF-8");
 		String name = request.getParameter("Name");
 		String old = request.getParameter("Old");
 		String gender_select = request.getParameter("Gender_select");
 		String gender = request.getParameter("Gender");
 
-		if (check_null = false) {
-			requiredCheckNull(request.getParameter("Name"));
-			request.setAttribute("error_msg_name", getErrorList());
-			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
-			dispatch.forward(request, response);
-		} else if (check_zenkaku = false) {
-			requiredCheckName_zenkaku(request.getParameter("Name"));
+		if (!check_zenkaku) {
+			requiredCheckName_zenkaku(request.getParameter(name));
 			request.setAttribute("error_msg_name_zenkaku", getErrorList());
 			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
 			dispatch.forward(request, response);
-		} else if (check_mojinumber = false) {
-			requiredCheckName_mojinumber(request.getParameter("Name"));
-			request.setAttribute("error_msg_name_mojinember", getErrorList());
-			RequestDispatcher dispatch = request.getRequestDispatcher("member.jsp");
-			dispatch.forward(request, response);
 		} else {
-			//##### バリデーションの結果問題なければ、次画面に遷移する
 			request.setAttribute("fromName", name);
 			request.setAttribute("fromOld", old);
 			request.setAttribute("fromGender_select", gender_select);
 			request.setAttribute("fromGender", gender);
 			RequestDispatcher dispatch = request.getRequestDispatcher("confirm.jsp");
 			dispatch.forward(request, response);
+
 		}
 	}
-
 }
