@@ -9,7 +9,7 @@ public class AbstractBasicPractice {
         // オブジェクトを生成・代入
     	animals[0] = new Dog();
     	animals[1] = new Cat();
-    	animals[2] = new Bird();
+    	animals[2] = new Birdd();
 
         // forループを使って動物たち配列変数を順にみていき、
         // 各動物の歌うsingメソッドの呼び出し
@@ -40,7 +40,7 @@ class Cat extends Animal {
 }
 
 // 鳥クラス
-class Bird extends Animal {
+class Birdd extends Animal {
 	public void sing() {
 		System.out.println("ぴよぴよ");
 	}
